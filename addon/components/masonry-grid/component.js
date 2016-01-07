@@ -68,7 +68,7 @@ export default Component.extend({
     }
   },
 
-  didRender() {
+  didInsertElement() {
     this._super(...arguments);
 
     let masonry = get(this, 'masonry');
