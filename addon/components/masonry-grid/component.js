@@ -120,5 +120,13 @@ export default Component.extend({
     }
 
     set(this, 'masonry', undefined);
+  },
+
+  actions:{
+    layout(){
+      console.log('Entra a layout');
+      const masonry = get(this, 'masonry');
+      masonry.layout();
+    }
   }
 });

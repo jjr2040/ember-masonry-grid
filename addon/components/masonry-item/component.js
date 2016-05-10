@@ -27,5 +27,11 @@ export default Component.extend({
     if (onItemClick && typeof onItemClick === 'function') {
       onItemClick(ev, item);
     }
+  },
+
+  actions: {
+    layout(){
+      this.sendAction('layout');
+    }
   }
 });
