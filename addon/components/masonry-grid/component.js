@@ -68,21 +68,37 @@ export default Component.extend({
     }
   },
 
-  didInsertElement() {
+  didRender() {
     this._super(...arguments);
 
     let masonry = get(this, 'masonry');
 
     Ember.run.scheduleOnce('afterRender', this, () => {
+
       imagesLoaded(get(this, 'element'), () => {
         if (masonry) {
           masonry.reloadItems();
+          Ember.Logger.debug('Entra a reload items');
         } else {
           const options = get(this, 'options');
           masonry = set(this, 'masonry', new Masonry(get(this, 'element'), options));
-
+          Ember.Logger.debug('Entra a crear masonry');
           masonry.on('layoutComplete', (layout) => {
-            this.sendAction('onLayoutComplete', layout);
+            this.sendAction('onLayoutComplete', layout, masonry);
+          });
+        }
+
+        masonry.layout();
+      }).on('progress', () => {
+        if (masonry) {
+          masonry.reloadItems();
+          Ember.Logger.debug('Entra a reload items');
+        } else {
+          const options = get(this, 'options');
+          masonry = set(this, 'masonry', new Masonry(get(this, 'element'), options));
+          Ember.Logger.debug('Entra a crear masonry');
+          masonry.on('layoutComplete', (layout) => {
+            this.sendAction('onLayoutComplete', layout, masonry);
           });
         }
 
@@ -124,8 +140,6 @@ export default Component.extend({
 
   actions:{
     layout(){
-      console.log('Entra a layout');
-      const masonry = get(this, 'masonry');
       masonry.layout();
     }
   }
